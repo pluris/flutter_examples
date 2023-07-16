@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_googlemap_place_api/model/place_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_googlemap_place_api/constants.dart';
@@ -22,7 +23,9 @@ class MapService {
         response.body;
       }
     } on Exception catch (e) {
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
     return null;
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:location/location.dart' as loc;
 import 'package:flutter_googlemap_place_api/repository/map_service.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter_googlemap_place_api/model/place_model.dart';
@@ -276,7 +277,7 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                       setState(() {
                         _controller = controller;
                       });
-                      String val = "json/google_map_dark_light.json";
+                      String val = "assets/json/google_map_dark_light.json";
                       var c = await rootBundle.loadString(val);
                       _controller.setMapStyle(c);
                     },
@@ -301,6 +302,19 @@ class _GoogleMapScreenState extends State<GoogleMapScreen> {
                           locationsWidget(),
                           const Spacer(),
                           confirmButton(),
+                          FloatingActionButton(
+                            onPressed: () async {
+                              loc.LocationData currentLocation =
+                                  await loc.Location().getLocation();
+                              _controller
+                                  .animateCamera(CameraUpdate.newLatLngZoom(
+                                LatLng(currentLocation.latitude!,
+                                    currentLocation.longitude!),
+                                15,
+                              ));
+                            },
+                            child: const Icon(Icons.my_location),
+                          ),
                         ],
                       ),
                     ),
